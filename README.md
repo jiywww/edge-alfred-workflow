@@ -1,6 +1,6 @@
 # Edge Alfred Workflow
 
-Control the Microsoft Edge browser directly from Alfred. Search and switch between profiles, with more features coming soon.
+Control the Microsoft Edge browser directly from Alfred. Search and switch between profiles and workspaces, with more features coming soon.
 
 ## Features
 
@@ -8,6 +8,13 @@ Control the Microsoft Edge browser directly from Alfred. Search and switch betwe
 
 - **Search Edge profiles** by name, email, or profile directory
 - **Quickly open** windows with different Edge profiles
+
+### Workspace Management
+
+- **Search Edge workspaces** across all profiles
+- **View workspace details** including tab count and last active time
+- **Quickly open** any workspace with its associated profile
+- **Active workspace indicator** shows which workspace is currently in use
 
 ### Coming Soon
 - **Bookmarks**: Search and open bookmarks across all profiles
@@ -30,9 +37,26 @@ Control the Microsoft Edge browser directly from Alfred. Search and switch betwe
 4. Press `⌥` + `↩` to copy the profile directory name
 
 Example searches:
-- `edge work` - Find your work profile
-- `edge john@` - Find profile by email
-- `edge` - List all profiles
+- `ep work` - Find your work profile
+- `ep john@` - Find profile by email
+- `ep` - List all profiles
+
+### Search Workspaces
+
+1. Open Alfred
+2. Type `ew` followed by your workspace name
+3. Press `↩` to open the workspace in Edge
+4. Press `⌥` + `↩` to copy the workspace ID
+5. Press `⌘` + `↩` to view workspace details
+
+Example searches:
+- `ew project` - Find workspace named "project"
+- `ew test` - Find workspaces containing "test"
+- `ew` - List all workspaces sorted by recent activity
+
+Workspace indicators:
+- 🟢 Active workspace currently in use
+- 👥 Shared workspace (if using Edge for Business)
 
 ## Configuration (Optional)
 
