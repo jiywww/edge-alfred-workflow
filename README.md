@@ -1,0 +1,1 @@
+# edge-alfred-workflow
