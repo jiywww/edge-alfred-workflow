@@ -48,6 +48,15 @@ def open_workspace(workspace_id: str, profile_dir: str):
     try:
         # Launch Edge with the workspace
         subprocess.run(cmd, check=False)
+        
+        # Bring Edge to front using AppleScript
+        applescript = '''
+        tell application "Microsoft Edge"
+            activate
+        end tell
+        '''
+        subprocess.run(['osascript', '-e', applescript], capture_output=True)
+        
         return 0
     except Exception as e:
         print(f"Error launching Edge: {e}", file=sys.stderr)
