@@ -14,7 +14,17 @@ def open_with_profile(profile_dir: str, url: str | None = None) -> int:
     if url:
         args.append(url)
     try:
+        # Launch Edge
         subprocess.Popen(args)
+        
+        # Bring Edge to front using AppleScript
+        applescript = '''
+        tell application "Microsoft Edge"
+            activate
+        end tell
+        '''
+        subprocess.run(['osascript', '-e', applescript], capture_output=True)
+        
         return 0
     except Exception as e:
         print(f"Failed to open Edge: {e}", file=sys.stderr)
