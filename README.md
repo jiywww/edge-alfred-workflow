@@ -55,7 +55,7 @@ Example searches:
 - `ew` - List all workspaces sorted by recent activity
 
 Workspace indicators:
-- 🟢 Active workspace currently in use
+- 📂 Active workspace currently in use
 - 👥 Shared workspace (if using Edge for Business)
 
 ## Configuration (Optional)
