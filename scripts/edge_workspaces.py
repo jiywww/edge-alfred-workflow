@@ -137,7 +137,7 @@ def create_alfred_item(workspace: EdgeWorkspace) -> Dict[str, Any]:
     # Add emoji for active/shared workspaces
     title = workspace.name
     if workspace.active:
-        title = f"🟢 {title}"
+        title = f"📂 {title}"
     elif workspace.shared:
         title = f"👥 {title}"
 
