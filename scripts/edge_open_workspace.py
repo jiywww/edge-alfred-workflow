@@ -5,11 +5,11 @@ Open Microsoft Edge with a specific workspace.
 This script launches Edge with a specified workspace and profile.
 """
 
-import subprocess
 import sys
 
 import edge_paths
 from edge_workspace_store import WorkspaceStore
+from edge_activate import activate_edge_for_workspace
 
 
 def open_workspace(workspace_id: str, profile_dir: str):
@@ -34,32 +34,11 @@ def open_workspace(workspace_id: str, profile_dir: str):
         print("Error: Microsoft Edge is not installed", file=sys.stderr)
         return 1
 
-    # Build the command - use both profile-directory and launch-workspace
-    # This ensures Edge knows which profile to use for the workspace
-    cmd = [str(edge_binary)]
-
-    # Always specify the profile directory explicitly
-    # Use = syntax for consistency
-    cmd.append(f"--profile-directory={profile_dir}")
-
-    # Add workspace launch argument
-    cmd.append(f"--launch-workspace={workspace_id}")
-
-    try:
-        # Launch Edge with the workspace
-        subprocess.run(cmd, check=False)
-        
-        # Bring Edge to front using AppleScript
-        applescript = '''
-        tell application "Microsoft Edge"
-            activate
-        end tell
-        '''
-        subprocess.run(['osascript', '-e', applescript], capture_output=True)
-        
+    # Use the new activation method that only brings one window forward
+    if activate_edge_for_workspace(workspace_id, profile_dir):
         return 0
-    except Exception as e:
-        print(f"Error launching Edge: {e}", file=sys.stderr)
+    else:
+        print("Error: Failed to activate Edge workspace", file=sys.stderr)
         return 2
 
 
