@@ -26,6 +26,23 @@ Control the Microsoft Edge browser directly from Alfred. Search and switch betwe
 ### Coming Soon
 - **Bookmarks**: Search and open bookmarks across all profiles
 
+## Known Limitations
+
+Due to macOS system design, there are some limitations with window activation:
+
+### Window Activation Behavior
+
+| Feature | Behavior | Note |
+|---------|----------|------|
+| **Profile Opening** | ✅ Only activates the new window | Opens with configurable URL (default: `edge://newtab`) |
+| **Workspace Opening** | ⚠️ Activates all Edge windows | macOS limitation - brings all windows forward |
+| **Tab Switching** | ⚠️ Activates all Edge windows | macOS limitation - brings all windows forward |
+
+**Why this happens:** 
+- macOS is designed to bring all application windows to the front when an app is activated. This is standard behavior across most Mac applications.
+- The Profile feature can avoid this by using a special activation method. You can configure which URL to open via the `EDGE_PROFILE_START_URL` setting.
+- Workspace and Tab features must use standard activation, which brings all windows forward.
+
 ## Installation
 
 ### Quick Setup
@@ -86,32 +103,35 @@ Tab indicators:
 
 Most users don't need any configuration. The workflow automatically detects Edge and Python installations.
 
-### Custom Installations
+### User Configuration
 
-If you have Edge or Python in non-standard locations, you can configure paths in Alfred:
+To customize the workflow:
 
-1. Select the workflow in Alfred Preferences
-2. Click `[x]` button (Configure Workflow)
-3. Add environment variables as needed:
+1. Right-click the workflow in Alfred Preferences
+2. Select "Configure..." 
+3. Adjust any of the following settings:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PYTHON_PATH` | Custom Python path | System Python |
-| `EDGE_APP` | Edge application path | `/Applications/Microsoft Edge.app` |
-| `EDGE_USER_DATA_DIR` | Edge data directory | `~/Library/Application Support/Microsoft Edge` |
+| Setting | Description | Default |
+|---------|-------------|---------|
+| **Profile Start URL** | URL to open when launching a new profile window | `edge://newtab` |
+| **Python Path** | Custom Python 3 path (leave empty for system default) | System Python |
+| **Edge Application Path** | Path to Microsoft Edge app | `/Applications/Microsoft Edge.app` |
+| **Edge User Data Directory** | Custom data directory (leave empty for default) | `~/Library/Application Support/Microsoft Edge` |
 
-### Common Configurations
+### Example Configurations
+
+**Profile Start URL Options:**
+- `edge://newtab` - Edge's new tab page (default)
+- `about:blank` - Blank page
+- `https://google.com` - Any website URL
 
 **Using Homebrew Python (Apple Silicon):**
-```
-PYTHON_PATH: /opt/homebrew/bin/python3
-```
+- Python Path: `/opt/homebrew/bin/python3`
 
 **Using Edge Beta:**
-```
-EDGE_APP: /Applications/Microsoft Edge Beta.app
-EDGE_USER_DATA_DIR: ~/Library/Application Support/Microsoft Edge Beta
-```
+- Edge Application Path: `/Applications/Microsoft Edge Beta.app`
+- Edge User Data Directory: `~/Library/Application Support/Microsoft Edge Beta`
+
 
 ## Requirements
 

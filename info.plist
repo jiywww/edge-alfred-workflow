@@ -361,7 +361,92 @@ fi
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
-	<array/>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>edge://newtab</string>
+				<key>placeholder</key>
+				<string>edge://newtab</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>URL to open when launching a new profile window. Examples: edge://newtab, about:blank, https://google.com</string>
+			<key>label</key>
+			<string>Profile Start URL</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>EDGE_PROFILE_START_URL</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>/usr/bin/python3</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Path to Python 3 executable. Leave empty to use system default. Example: /opt/homebrew/bin/python3</string>
+			<key>label</key>
+			<string>Python Path (Optional)</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>PYTHON_PATH</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>/Applications/Microsoft Edge.app</string>
+				<key>placeholder</key>
+				<string>/Applications/Microsoft Edge.app</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Path to Microsoft Edge application. Change this if using Edge Beta or Canary.</string>
+			<key>label</key>
+			<string>Edge Application Path</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>EDGE_APP</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>~/Library/Application Support/Microsoft Edge</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Path to Edge user data directory. Leave empty for default location.</string>
+			<key>label</key>
+			<string>Edge User Data Directory (Optional)</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>EDGE_USER_DATA_DIR</string>
+		</dict>
+	</array>
 	<key>variables</key>
 	<dict>
 		<key>EDGE_APP</key>
@@ -370,6 +455,8 @@ fi
 		<string></string>
 		<key>EDGE_BUNDLE_ID</key>
 		<string></string>
+		<key>EDGE_PROFILE_START_URL</key>
+		<string>edge://newtab</string>
 		<key>EDGE_USER_DATA_DIR</key>
 		<string></string>
 		<key>PYTHON_PATH</key>
