@@ -43,6 +43,9 @@ def activate_edge_for_profile(profile_dir: str):
     """
     Launch and activate Edge for a specific profile.
     
+    This method only brings ONE window to the front (the new profile window)
+    by using the 'open' command with a URL.
+    
     Parameters
     ----------
     profile_dir : str
@@ -53,17 +56,25 @@ def activate_edge_for_profile(profile_dir: str):
     bool
         True if successful, False otherwise.
     """
+    import os
+    
     # First launch the profile window
     edge_bin = "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
     try:
         subprocess.Popen([edge_bin, f"--profile-directory={profile_dir}"])
         # Small delay to let window open
         time.sleep(0.3)
+        
+        # Get the URL to open from Alfred workflow configuration
+        # Users can set this in Alfred Preferences > Workflows > Edge Control > [x] Configure
+        activation_url = os.environ.get('EDGE_PROFILE_START_URL', 'edge://newtab')
+        
+        # Then use 'open' with the configured URL to activate only the new window
+        result = subprocess.run(['open', '-a', 'Microsoft Edge', activation_url], 
+                              capture_output=True, text=True)
+        return result.returncode == 0
     except Exception:
         return False
-    
-    # Then activate Edge (will bring all windows forward)
-    return activate_edge()
 
 
 def activate_edge_for_workspace(workspace_id: str, profile_dir: str):
