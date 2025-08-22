@@ -16,9 +16,15 @@ Control the Microsoft Edge browser directly from Alfred. Search and switch betwe
 - **Quickly open** any workspace with its associated profile
 - **Active workspace indicator** shows which workspace is currently in use
 
+### Tab Search & Switching
+
+- **Search all open tabs** across windows and profiles
+- **Quick switch** to any tab with a single keystroke
+- **Copy URLs** or close tabs with modifier keys
+- **See tab associations** with profiles and workspaces
+
 ### Coming Soon
 - **Bookmarks**: Search and open bookmarks across all profiles
-- **Tabs**: Search and switch to open tabs
 
 ## Installation
 
@@ -57,6 +63,24 @@ Example searches:
 Workspace indicators:
 - 📂 Active workspace currently in use
 - 👥 Shared workspace (if using Edge for Business)
+
+### Search Tabs
+
+1. Open Alfred
+2. Type `et` followed by your search query
+3. Press `↩` to switch to the selected tab
+4. Press `⌘` + `↩` to copy the tab's URL
+5. Press `⌥` + `↩` to close the tab
+
+Example searches:
+- `et github` - Find tabs with "github" in title or URL
+- `et youtube` - Find YouTube tabs
+- `et` - List all open tabs
+
+Tab indicators:
+- ⭐ Currently active tab
+- 📂 Tab belongs to a workspace
+- Profile and email shown for each tab
 
 ## Configuration (Optional)
 
