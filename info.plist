@@ -117,7 +117,7 @@ WF="$PWD"
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>keyword</key>
-				<string>ep</string>
+				<string>edgep</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -168,7 +168,7 @@ WF="$PWD"
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>keyword</key>
-				<string>ew</string>
+				<string>edgew</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -277,7 +277,7 @@ fi
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>keyword</key>
-				<string>et</string>
+				<string>edget</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
