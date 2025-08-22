@@ -15,14 +15,14 @@ from edge_workspace_store import WorkspaceStore
 def open_workspace(workspace_id: str, profile_dir: str):
     """
     Open Edge with a specific workspace.
-    
+
     Parameters
     ----------
     workspace_id : str
         The workspace ID to open.
     profile_dir : str
         The profile directory (e.g., "Default", "Profile 1").
-    
+
     Returns
     -------
     int
@@ -33,18 +33,18 @@ def open_workspace(workspace_id: str, profile_dir: str):
     if not edge_binary.exists():
         print("Error: Microsoft Edge is not installed", file=sys.stderr)
         return 1
-    
+
     # Build the command - use both profile-directory and launch-workspace
     # This ensures Edge knows which profile to use for the workspace
     cmd = [str(edge_binary)]
-    
+
     # Always specify the profile directory explicitly
     # Use = syntax for consistency
     cmd.append(f"--profile-directory={profile_dir}")
-    
+
     # Add workspace launch argument
     cmd.append(f"--launch-workspace={workspace_id}")
-    
+
     try:
         # Launch Edge with the workspace
         subprocess.run(cmd, check=False)
@@ -59,28 +59,34 @@ def main():
     Main function for the script.
     """
     if len(sys.argv) < 2:
-        print("Usage: edge_open_workspace.py <workspace_id>|<profile_dir>", file=sys.stderr)
+        print(
+            "Usage: edge_open_workspace.py <workspace_id>|<profile_dir>",
+            file=sys.stderr,
+        )
         return 64
-    
+
     # Parse the argument (format: "workspace_id|profile_dir")
     arg = sys.argv[1]
     parts = arg.split("|")
-    
+
     if len(parts) != 2:
-        print("Error: Invalid argument format. Expected: workspace_id|profile_dir", file=sys.stderr)
+        print(
+            "Error: Invalid argument format. Expected: workspace_id|profile_dir",
+            file=sys.stderr,
+        )
         return 64
-    
+
     workspace_id = parts[0]
     profile_dir = parts[1]
-    
+
     # Validate the workspace exists
     store = WorkspaceStore()
     workspace = store.get_workspace_by_id(workspace_id)
-    
+
     if not workspace:
         print(f"Error: Workspace '{workspace_id}' not found", file=sys.stderr)
         return 2
-    
+
     # Open the workspace
     return open_workspace(workspace_id, profile_dir)
 
