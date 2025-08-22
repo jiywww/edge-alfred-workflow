@@ -41,6 +41,21 @@ Configure the workflow's settings in Alfred Preferences → Workflows → Edge C
 
 ## Setup
 
+### System Requirements
+
+* **macOS Big Sur (11.0) or later** - Required for Python 3.9+
+* **Microsoft Edge** - Must be installed on your Mac
+* **Alfred 5** with Powerpack license
+
+### Required Permissions
+
+When you first use this workflow, macOS will request permission for:
+
+* **Automation Access** - Alfred needs permission to control Microsoft Edge
+  * You'll see: "Alfred wants access to control Microsoft Edge"
+  * Click "OK" to grant permission
+  * If you accidentally deny, go to System Settings → Privacy & Security → Automation → Alfred → Enable Microsoft Edge
+
 ### Python Requirements
 
 This workflow requires Python 3.9 or later, which is included in macOS Big Sur and later. No additional packages need to be installed.
