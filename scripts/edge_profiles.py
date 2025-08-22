@@ -10,15 +10,16 @@ THIS_DIR = Path(__file__).resolve().parent
 
 DEFAULT_ICON = THIS_DIR.parent / "icon.png"
 
+
 def build_items(q: str):
     """
     Build Alfred items for profile search.
-    
+
     Parameters
     ----------
     q : str
         Search query string.
-    
+
     Yields
     ------
     dict
