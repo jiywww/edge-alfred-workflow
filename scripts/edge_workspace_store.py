@@ -13,6 +13,7 @@ import re
 
 import edge_paths
 from edge_profile_store import ProfileStore, EdgeProfile
+from edge_active_workspaces import get_active_workspace_names
 
 
 @dataclass(frozen=True)
@@ -133,7 +134,7 @@ class WorkspaceStore:
                     profile_dir=profile.dir_name,
                     profile_name=profile.display_name,
                     profile_email=profile.email or "",
-                    active=ws.get("active", False),
+                    active=False,  # Will be updated based on actual window state
                     color=ws.get("color", 0),
                     tab_count=self._parse_tab_count(ws.get("menuSubtitle", "")),
                     last_active_time=ws.get("last_active_time", 0),
@@ -162,10 +163,31 @@ class WorkspaceStore:
 
         all_workspaces = []
         profiles = self.profile_store.load()
+        
+        # Get currently active workspace names
+        active_workspace_names = get_active_workspace_names()
 
         for profile in profiles:
             workspaces = self._load_workspaces_from_profile(profile)
             all_workspaces.extend(workspaces)
+        
+        # Update active status based on actual open windows
+        for i, workspace in enumerate(all_workspaces):
+            if workspace.name in active_workspace_names:
+                # Create a new workspace object with updated active status
+                all_workspaces[i] = EdgeWorkspace(
+                    id=workspace.id,
+                    name=workspace.name,
+                    profile_dir=workspace.profile_dir,
+                    profile_name=workspace.profile_name,
+                    profile_email=workspace.profile_email,
+                    active=True,  # Mark as active since window is open
+                    color=workspace.color,
+                    tab_count=workspace.tab_count,
+                    last_active_time=workspace.last_active_time,
+                    is_owner=workspace.is_owner,
+                    shared=workspace.shared,
+                )
 
         # Sort by last active time, most recent first
         all_workspaces.sort(key=lambda w: w.last_active_time, reverse=True)
