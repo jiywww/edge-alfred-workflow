@@ -34,12 +34,13 @@ def open_workspace(workspace_id: str, profile_dir: str):
         print("Error: Microsoft Edge is not installed", file=sys.stderr)
         return 1
     
-    # Build the command
+    # Build the command - use both profile-directory and launch-workspace
+    # This ensures Edge knows which profile to use for the workspace
     cmd = [str(edge_binary)]
     
-    # Add profile directory argument if not Default
-    if profile_dir and profile_dir != "Default":
-        cmd.extend(["--profile-directory", profile_dir])
+    # Always specify the profile directory explicitly
+    # Use = syntax for consistency
+    cmd.append(f"--profile-directory={profile_dir}")
     
     # Add workspace launch argument
     cmd.append(f"--launch-workspace={workspace_id}")
