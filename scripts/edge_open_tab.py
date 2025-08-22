@@ -9,11 +9,12 @@ by window and tab index.
 import sys
 import subprocess
 import os
+from edge_activate import activate_edge_for_tab
 
 
 def switch_to_tab(window_index: int, tab_index: int) -> bool:
     """
-    Switch to a specific tab in Edge using JXA.
+    Switch to a specific tab in Edge.
 
     Parameters
     ----------
@@ -27,89 +28,8 @@ def switch_to_tab(window_index: int, tab_index: int) -> bool:
     bool
         True if successful, False otherwise.
     """
-    jxa_script = f'''
-    (() => {{
-        let edge = Application("Microsoft Edge");
-        
-        try {{
-            if (!edge.running()) {{
-                return JSON.stringify({{success: false, error: "Edge is not running"}});
-            }}
-            
-            let windows = edge.windows();
-            
-            // Check if window exists (convert to 0-based index)
-            let windowIdx = {window_index - 1};
-            if (windowIdx < 0 || windowIdx >= windows.length) {{
-                return JSON.stringify({{
-                    success: false, 
-                    error: `Window {window_index} not found (only ${{windows.length}} windows open)`
-                }});
-            }}
-            
-            let window = windows[windowIdx];
-            let tabs = window.tabs();
-            
-            // Check if tab exists (convert to 0-based index)
-            let tabIdx = {tab_index - 1};
-            if (tabIdx < 0 || tabIdx >= tabs.length) {{
-                return JSON.stringify({{
-                    success: false,
-                    error: `Tab {tab_index} not found in window {window_index} (only ${{tabs.length}} tabs)`
-                }});
-            }}
-            
-            // Activate Edge application
-            edge.activate();
-            
-            // Bring window to front
-            window.index = 1;
-            
-            // Get the tab's URL and title for activation
-            let targetTab = tabs[tabIdx];
-            let targetUrl = targetTab.url();
-            
-            // Set active tab by URL matching (workaround)
-            window.activeTabIndex = tabIdx + 1;
-            
-            return JSON.stringify({{success: true}});
-            
-        }} catch(e) {{
-            return JSON.stringify({{success: false, error: e.toString()}});
-        }}
-    }})();
-    '''
-
-    try:
-        result = subprocess.run(
-            ['osascript', '-l', 'JavaScript', '-e', jxa_script],
-            capture_output=True,
-            text=True,
-            timeout=3
-        )
-
-        if result.returncode == 0 and result.stdout:
-            import json
-            response = json.loads(result.stdout.strip())
-            
-            if response.get('success'):
-                return True
-            else:
-                error = response.get('error', 'Unknown error')
-                print(f"Error: {error}", file=sys.stderr)
-                return False
-        else:
-            print(f"Script failed with return code {result.returncode}", file=sys.stderr)
-            if result.stderr:
-                print(f"Error: {result.stderr}", file=sys.stderr)
-            return False
-
-    except subprocess.TimeoutExpired:
-        print("Script timed out", file=sys.stderr)
-        return False
-    except Exception as e:
-        print(f"Unexpected error: {e}", file=sys.stderr)
-        return False
+    # Use the new activation method that only brings one window forward
+    return activate_edge_for_tab(window_index, tab_index)
 
 
 def copy_url_to_clipboard(url: str) -> bool:

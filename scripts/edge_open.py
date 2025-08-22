@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import subprocess
 import sys
 from edge_paths import find_edge_binary
+from edge_activate import activate_edge_for_profile
 
 
 def open_with_profile(profile_dir: str, url: str | None = None) -> int:
@@ -10,24 +10,12 @@ def open_with_profile(profile_dir: str, url: str | None = None) -> int:
     if not edge_bin.exists():
         print("Edge binary not found. Is Microsoft Edge installed?", file=sys.stderr)
         return 1
-    args = [str(edge_bin), f"--profile-directory={profile_dir}"]
-    if url:
-        args.append(url)
-    try:
-        # Launch Edge
-        subprocess.Popen(args)
-        
-        # Bring Edge to front using AppleScript
-        applescript = '''
-        tell application "Microsoft Edge"
-            activate
-        end tell
-        '''
-        subprocess.run(['osascript', '-e', applescript], capture_output=True)
-        
+    
+    # Use the new activation method that only brings one window forward
+    if activate_edge_for_profile(profile_dir):
         return 0
-    except Exception as e:
-        print(f"Failed to open Edge: {e}", file=sys.stderr)
+    else:
+        print("Failed to activate Edge profile", file=sys.stderr)
         return 2
 
 
