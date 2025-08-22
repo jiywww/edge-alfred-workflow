@@ -6,14 +6,14 @@ Control Microsoft Edge browser directly from Alfred. Manage profiles, workspaces
 
 Search Edge profiles and open them in new windows via the `edgep` keyword.
 
-![Edge Profiles Search](images/profiles.png)
+<img src="images/profiles.png" width="600" alt="Edge Profiles Search">
 
 * ↩︎ Open profile in new window
 * ⌘↩︎ Copy profile directory path
 
 Alternatively, search Edge workspaces across all profiles via the `edgew` keyword.
 
-![Edge Workspaces Search](images/workspaces.png)  
+<img src="images/workspaces.png" width="600" alt="Edge Workspaces Search">
 
 * ↩︎ Open workspace with associated profile
 * 📂 indicates currently active workspace
@@ -21,7 +21,7 @@ Alternatively, search Edge workspaces across all profiles via the `edgew` keywor
 
 Search all open tabs across windows and profiles via the `edget` keyword.
 
-![Edge Tabs Search](images/tabs.png)
+<img src="images/tabs.png" width="600" alt="Edge Tabs Search">
 
 * ↩︎ Switch to tab
 * ⌘↩︎ Copy tab URL to clipboard  
