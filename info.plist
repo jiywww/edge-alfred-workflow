@@ -231,6 +231,39 @@ WF="$PWD"
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>PY="/opt/homebrew/bin/python3"; [ -x "$PY" ] || PY="python3"
+WF="$PWD"
+
+# Check if action variable is set (for modifiers)
+if [ "$action" = "copy_url" ]; then
+    export action="copy_url"
+elif [ "$action" = "close_tab" ]; then
+    export action="close_tab"
+fi
+
+"$PY" "$WF/scripts/edge_open_tab.py" "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>TAB-OPEN-UUID</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>alfredfiltersresults</key>
 				<false/>
 				<key>alfredfiltersresultsmatchmode</key>
@@ -279,39 +312,6 @@ WF="$PWD"
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>PY="/opt/homebrew/bin/python3"; [ -x "$PY" ] || PY="python3"
-WF="$PWD"
-
-# Check if action variable is set (for modifiers)
-if [ "$action" = "copy_url" ]; then
-    export action="copy_url"
-elif [ "$action" = "close_tab" ]; then
-    export action="close_tab"
-fi
-
-"$PY" "$WF/scripts/edge_open_tab.py" "$1"</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>TAB-OPEN-UUID</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -345,17 +345,17 @@ fi
 			<key>ypos</key>
 			<real>185</real>
 		</dict>
-		<key>TAB-SEARCH-UUID</key>
-		<dict>
-			<key>xpos</key>
-			<real>200</real>
-			<key>ypos</key>
-			<real>455</real>
-		</dict>
 		<key>TAB-OPEN-UUID</key>
 		<dict>
 			<key>xpos</key>
 			<real>430</real>
+			<key>ypos</key>
+			<real>455</real>
+		</dict>
+		<key>TAB-SEARCH-UUID</key>
+		<dict>
+			<key>xpos</key>
+			<real>200</real>
 			<key>ypos</key>
 			<real>455</real>
 		</dict>
@@ -449,23 +449,15 @@ fi
 	</array>
 	<key>variables</key>
 	<dict>
-		<key>EDGE_APP</key>
-		<string></string>
 		<key>EDGE_BIN</key>
 		<string></string>
 		<key>EDGE_BUNDLE_ID</key>
-		<string></string>
-		<key>EDGE_PROFILE_START_URL</key>
-		<string>edge://newtab</string>
-		<key>EDGE_USER_DATA_DIR</key>
-		<string></string>
-		<key>PYTHON_PATH</key>
 		<string></string>
 	</dict>
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>0.3.0</string>
+	<string>0.4.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/jiywww/edge-alfred-workflow</string>
 </dict>
