@@ -57,7 +57,6 @@ def activate_edge_for_profile(profile_dir: str):
     bool
         True if successful, False otherwise.
     """
-    import os
     import sys
     from edge_profile_store import ProfileStore
 
@@ -76,19 +75,7 @@ def activate_edge_for_profile(profile_dir: str):
     try:
         # Launch with profile
         subprocess.Popen([edge_bin, f"--profile-directory={profile_dir}"])
-        # Small delay to let window open
-        time.sleep(0.3)
-
-        # Get the URL to open from Alfred workflow configuration
-        activation_url = os.environ.get("EDGE_PROFILE_START_URL", "edge://newtab")
-
-        # Use 'open' with the configured URL to activate only the new window
-        result = subprocess.run(
-            ["open", "-a", "Microsoft Edge", activation_url],
-            capture_output=True,
-            text=True,
-        )
-        return result.returncode == 0
+        return True
     except Exception:
         return False
 
