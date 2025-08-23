@@ -10,7 +10,6 @@ See WINDOW_ACTIVATION_RESEARCH.md for details on methods tested.
 """
 
 import subprocess
-import time
 
 
 def activate_edge():
@@ -70,7 +69,6 @@ def activate_edge_for_profile(profile_dir: str):
         return False
 
     # For profile activation, we'll use the original method which works well
-    # The 'open' command with a URL only brings one window forward
     edge_bin = "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
     try:
         # Launch with profile
@@ -84,7 +82,8 @@ def activate_edge_for_workspace(workspace_id: str, profile_dir: str):
     """
     Launch and activate Edge for a specific workspace.
 
-    Creates the window in background first, then activates only that window.
+    Note: When creating a new workspace window, Edge will also activate
+    the frontmost Edge window. This is a known limitation.
 
     Parameters
     ----------
@@ -98,114 +97,20 @@ def activate_edge_for_workspace(workspace_id: str, profile_dir: str):
     bool
         True if successful, False otherwise.
     """
-    import os
-    import json
-
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    list_windows_path = os.path.join(script_dir, "edge_list_windows")
-    raise_window_path = os.path.join(script_dir, "edge_raise_window")
-
-    # Step 1: Get current windows
-    windows_before = []
-    window_numbers_before = set()
-    if os.path.exists(list_windows_path):
-        result = subprocess.run(
-            [list_windows_path], capture_output=True, text=True, timeout=2
-        )
-        if result.returncode == 0:
-            try:
-                windows_before = json.loads(result.stdout)
-                window_numbers_before = {w["windowNumber"] for w in windows_before}
-            except (json.JSONDecodeError, KeyError):
-                pass
-
-    # Step 2: Launch workspace in background (no activation)
     edge_bin = "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
 
-    # Use nohup to completely detach the process and avoid activation
-    cmd = [
-        "nohup",
-        edge_bin,
-        f"--profile-directory={profile_dir}",
-        f"--launch-workspace={workspace_id}",
-        "--silent-launch",
-    ]
-
     try:
-        # Launch in background with no connection to current terminal
-        with open(os.devnull, "w") as devnull:
-            subprocess.Popen(
-                cmd,
-                stdout=devnull,
-                stderr=devnull,
-                stdin=subprocess.DEVNULL,
-                start_new_session=True,  # Complete process isolation
-            )
-    except Exception:
-        return False
-
-    # Step 3: Wait and detect new window
-    new_window = None
-    max_attempts = 10  # Try for up to 2 seconds
-
-    for attempt in range(max_attempts):
-        time.sleep(0.2)  # Check every 200ms
-
-        if os.path.exists(list_windows_path):
-            result = subprocess.run(
-                [list_windows_path], capture_output=True, text=True, timeout=2
-            )
-            if result.returncode == 0:
-                try:
-                    windows_after = json.loads(result.stdout)
-
-                    # Check if workspace was already open (no new window)
-                    if len(windows_after) == len(windows_before):
-                        # Workspace was already open - find it by checking active workspaces
-                        # For now, assume Edge switched to it (which it does automatically)
-                        # But we don't want to activate anything
-                        return True
-
-                    # Find new window
-                    for w in windows_after:
-                        if w["windowNumber"] not in window_numbers_before:
-                            new_window = w
-                            break
-
-                    if new_window:
-                        break
-
-                except (json.JSONDecodeError, KeyError):
-                    continue
-
-    # Step 4: Activate only the new window if found
-    if new_window and os.path.exists(raise_window_path):
-        # Wait for window to be fully registered in Accessibility API
-        time.sleep(0.5)
-
-        # Try to raise the window
-        result = subprocess.run(
+        # Simple and direct workspace launch
+        subprocess.Popen(
             [
-                raise_window_path,
-                str(new_window["pid"]),
-                str(new_window["windowNumber"]),
-            ],
-            capture_output=True,
-            text=True,
-            timeout=3,
+                edge_bin,
+                "--new-window",
+                f"--profile-directory={profile_dir}",
+                f"--launch-workspace={workspace_id}",
+            ]
         )
-
-        if result.returncode == 0:
-            return True
-        else:
-            # Fallback: window was created but can't be raised individually
-            # This is still better than activating all windows
-            return True  # Report success since workspace was opened
-    elif not new_window and len(windows_after) == len(windows_before):
-        # Workspace was already open
         return True
-    else:
-        # Failed to detect new window or activate it
+    except Exception:
         return False
 
 
