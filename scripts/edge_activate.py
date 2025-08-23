@@ -82,8 +82,9 @@ def activate_edge_for_workspace(workspace_id: str, profile_dir: str):
     """
     Launch and activate Edge for a specific workspace.
 
-    Note: When creating a new workspace window, Edge will also activate
-    the frontmost Edge window. This is a known limitation.
+    This method creates the workspace window in the background, then uses
+    the Swift helper to raise only that specific window, avoiding the issue
+    of bringing all Edge windows forward.
 
     Parameters
     ----------
@@ -97,19 +98,69 @@ def activate_edge_for_workspace(workspace_id: str, profile_dir: str):
     bool
         True if successful, False otherwise.
     """
+    import os
+    import json
+    import time
+    
     edge_bin = "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
 
     try:
-        # Simple and direct workspace launch
+        # Step 1: Launch workspace in background (won't bring window forward)
         subprocess.Popen(
             [
                 edge_bin,
-                "--new-window",
                 f"--profile-directory={profile_dir}",
                 f"--launch-workspace={workspace_id}",
             ]
         )
-        return True
+        
+        # Give Edge time to create the window
+        time.sleep(1.5)
+        
+        # Step 2: Get the newly created window information
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        list_windows_path = os.path.join(script_dir, "edge_list_windows")
+        
+        if not os.path.exists(list_windows_path):
+            # Fallback: If no window lister, just return (window created but in background)
+            return True
+            
+        result = subprocess.run(
+            [list_windows_path], capture_output=True, text=True, timeout=2
+        )
+        
+        if result.returncode != 0:
+            return True  # Window created but we can't raise it
+            
+        try:
+            windows = json.loads(result.stdout)
+            if not windows:
+                return True  # No windows found, but launch succeeded
+                
+            # Get the most recently created window (should be first in list)
+            # The window list is typically ordered with newest/frontmost first
+            newest_window = windows[0]
+            pid = newest_window["pid"]
+            window_number = newest_window["windowNumber"]
+            
+        except (json.JSONDecodeError, KeyError):
+            return True  # Window created but can't parse info
+            
+        # Step 3: Use the Swift helper to raise only the workspace window
+        raise_window_path = os.path.join(script_dir, "edge_raise_window")
+        
+        if not os.path.exists(raise_window_path):
+            return True  # Window created but can't raise it
+            
+        result = subprocess.run(
+            [raise_window_path, str(pid), str(window_number)],
+            capture_output=True,
+            text=True,
+            timeout=3,
+        )
+        
+        return result.returncode == 0
+        
     except Exception:
         return False
 
