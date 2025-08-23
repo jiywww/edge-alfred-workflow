@@ -82,18 +82,6 @@ Microsoft Edge must be installed on your Mac. The workflow will automatically de
 * Copy URLs or close tabs with modifier keys
 * See profile and workspace associations
 
-## Known Limitations
-
-Due to macOS system design, there are some limitations with window activation:
-
-| Feature | Behavior | Note |
-|---------|----------|------|
-| **Profile Opening** | ✅ Only activates the new window | Opens with configurable URL |
-| **Workspace Opening** | ⚠️ Activates all Edge windows | macOS limitation |
-| **Tab Switching** | ⚠️ Activates all Edge windows | macOS limitation |
-
-This is standard macOS behavior when activating applications. The Profile feature uses a special activation method to avoid this.
-
 ## Troubleshooting
 
 ### Edge Not Found
