@@ -26,7 +26,6 @@ Search all open tabs across windows and profiles via the `edget` keyword.
 * ↩︎ Switch to tab
 * ⌘↩︎ Copy tab URL to clipboard  
 * ⌥↩︎ Close tab
-* ⭐ indicates currently active tab
 
 ## Configuration
 
